@@ -1,6 +1,5 @@
 import json
 import httpx
-# C'est ici que sont définies les interfaces réelles dans le SDK Mistral
 from mistralai.client._hooks.sdkhooks import BeforeRequestHook
 from mistralai.client._hooks.types import HookContext
 from ...heuristics import HeuristicGuard
@@ -13,7 +12,7 @@ class HeuristicGuardHook(BeforeRequestHook):
             messages = body.get("messages", [])
             last_msg = next((m["content"] for m in reversed(messages) if m.get("role") == "user"), "")
             
-            # Ton filtre
+            # filtre
             if not HeuristicGuard.analyze(last_msg)["valid"]:
                 raise ValueError("Blocked by HeuristicGuard")
         return request
